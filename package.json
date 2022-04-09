@@ -1,0 +1,9 @@
+{
+	"name": "sqlsimplecipher",
+	"version": "1.0.0",
+	"description": "Encrypt or decrypt SQLite databases without SQLCipher installed. Based on bssthu/pysqlsimplecipher",
+	"main": "index.js",
+	"typings": "index.d.ts",
+	"author": "Seizefire",
+	"license": "MIT"
+}
