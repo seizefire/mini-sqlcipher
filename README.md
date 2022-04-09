@@ -1,6 +1,8 @@
 # sqlsimplecipher
 Encrypt and decrypt SQLite databases without SQLCipher installed
 
+Based on [bssthu/pysqlsimplecipher](https://github.com/bssthu/pysqlsimplecipher)
+
 ## Installation
 `npm install sqlsimplecipher`
 
