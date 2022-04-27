@@ -3,7 +3,7 @@
 	"version": "1.0.0",
 	"description": "Encrypt or decrypt SQLite databases without SQLCipher installed",
 	"main": "index.js",
-	"keywords": ["sql", "sqlite", "sqlcipher", "sqlite3", "sqlite3-encryption", "database-encryption"],
+	"keywords": ["sql", "sqlite", "sqlcipher", "sqlite3"],
 	"repository": {
 		"type": "git",
 		"url": "github:seizefire/mini-sqlcipher#nodejs"
