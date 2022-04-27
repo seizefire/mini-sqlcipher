@@ -1,49 +1,54 @@
-# sqlsimplecipher
+# mini-sqlcipher
 Encrypt and decrypt SQLite databases without SQLCipher installed
 
 Based on [bssthu/pysqlsimplecipher](https://github.com/bssthu/pysqlsimplecipher)
 
 ## Installation
-`npm install sqlsimplecipher`
+`npm install mini-sqlcipher`
 
-## API
-### .decrypt
-Decrypts an encrypted database contained inside a Buffer
+## Usage
+### Encryption
+There are three methods available for encrypting a database.
+- `encrypt(buffer, password/key, configuration)`: Encrypts a raw Buffer
+- `encryptFile(path, password/key, configuration)`: Encrypts a database file, then overwrites it
+- `encryptFile(inputPath, outputPath, password/key, configuration)`: Encrypts a database file, and stores it in a separate file
+
+Passwords should be passed as strings, while raw keys should be passed as strictly `Buffer`s. Additionally, the database must already have adequate reserve space in order to encrypt.
+
+#### Examples
 ```js
-sqlsimplecipher.decrypt(buffer: Buffer, password: string, configuration: SQLCipherConfiguration): Buffer;
-sqlsimplecipher.decrypt(buffer: Buffer, key: Buffer, configuration: SQLCipherConfiguration): Buffer;
+var enc = MSC.encrypt(raw, "password", MSC.SQLCIPHER3);
+MSC.encryptFile("database.db", "123456", MSC.SQLCIPHER4);
+MSC.encryptFile("input.db", "output.db", "qwerty", MSC.SQLCIPHER3);
 ```
 
-### .decryptFile
-Decrypts an encrypted database file and stores it in the file system
+
+### Decryption
+There are also three methods available for decrypting an encrypted database.
+- `decrypt(buffer, password/key, configuration)`: Decrypts a raw Buffer
+- `decryptFile(path, password/key, configuration)`: Decrypts a database file, then overwrites it
+- `decryptFile(inputPath, outputPath, password/key, configuration)`: Decrypts a database file, and stores it in a separate file
+
+Passwords should also be passed as strings, while raw keys should be passed as strictly `Buffer`s.
+
+#### Examples
 ```js
-sqlsimplecipher.decryptFile(path: string, password: string, configuration: SQLCipherConfiguration): void;
-sqlsimplecipher.decryptFile(path: string, key: Buffer, configuration: SQLCipherConfiguration): void;
-sqlsimplecipher.decryptFile(inputPath: string, outputPath: string, password: string, configuration: SQLCipherConfiguration): void;
-sqlsimplecipher.decryptFile(inputPath: string, outputPath: string, key: Buffer, configuration: SQLCipherConfiguration): void;
+var raw = MSC.decrypt(enc, "default", MSC.SQLCIPHER4);
+MSC.decryptFile("database.db", "111111", MSC.SQLCIPHER3);
+MSC.decryptFile("enc.db", "dec.db", "iloveyou", MSC.SQLCIPHER4);
 ```
 
-### .encrypt
-Encrypts a database contained inside a Buffer
-```js
-sqlsimplecipher.encrypt(buffer: Buffer, password: string, configuration: SQLCipherConfiguration): Buffer;
-sqlsimplecipher.encrypt(buffer: Buffer, key: Buffer, configuration: SQLCipherConfiguration): Buffer;
-```
 
-### .encryptFile
-Encrypts a database file and stores it in the file system
-```js
-sqlsimplecipher.encryptFile(path: string, password: string, configuration: SQLCipherConfiguration): void;
-sqlsimplecipher.encryptFile(path: string, key: Buffer, configuration: SQLCipherConfiguration): void;
-sqlsimplecipher.encryptFile(inputPath: string, outputPath: string, password: string, configuration: SQLCipherConfiguration): void;
-sqlsimplecipher.encryptFile(inputPath: string, outputPath: string, key: Buffer, configuration: SQLCipherConfiguration): void;
-```
+### SQLCipher configurations
+Configurations are required to have three specific values
+- `kdf_iterations`: the number of iterations for deriving keys. Only useful when a password is given instead of a raw key.
+- `kdf_algorithm`: the algorithm used for deriving keys. Also only useful when a password is given instead of a raw key.
+- `hmac_algorithm`: the algorithm used for generating checksums of the database.
 
-### SQLCipherConfiguration
-```js
-{
-	kdf_iterations: number,
-	kdf_algorithm: "sha1" | "sha256" | "sha512",
-	hmac_algorithm: "sha1" | "sha256" | "sha512"
-}
-```
+Supported algorithms are `sha1`, `sha256`, and `sha512`
+
+**Example:** `{kdf_iterations: 20000, kdf_algorithm: "sha256", hmac_algorithm: "sha256"}`
+
+There are pre-defined configurations available for use. `SQLCIPHER3` represents the default configuration for SQLCipher 3.x, and `SQLCIPHER4` represents the default configuration for SQLCipher 4.x.
+
+**Example:** `MSC.SQLCIPHER4`
