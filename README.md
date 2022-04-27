@@ -1,4 +1,6 @@
 # mini-sqlcipher
+<img alt="npm" src="https://img.shields.io/npm/v/mini-sqlcipher?color=%23ff5555&label=NPM%20package&logo=npm"> <img alt="NPM" src="https://img.shields.io/npm/l/mini-sqlcipher?label=license">
+
 Encrypt and decrypt SQLite databases without SQLCipher installed
 
 Based on [bssthu/pysqlsimplecipher](https://github.com/bssthu/pysqlsimplecipher)
